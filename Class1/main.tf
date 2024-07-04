@@ -25,3 +25,17 @@ resource "aws_iam_group_membership" "team" {
 
   group = aws_iam_group.group1.name
 }
+
+resource "aws_iam_user" "lbX" {
+  name = "loadbalancerX"
+}
+
+resource "aws_iam_group_membership" "teamX" {
+  name = "tf-testing-group-membership"
+
+  users = [
+    aws_iam_user.lbX.name,
+  ]
+
+  group = aws_iam_group.group1.name
+}
