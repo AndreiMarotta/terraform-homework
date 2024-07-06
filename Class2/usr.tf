@@ -12,5 +12,5 @@ resource "aws_iam_group_membership" "team1" {
   users = [
     for i in aws_iam_user.usr : i.name
   ]
-  group = aws_iam_group.blackpink.name
+  group = aws_iam_group.group1.name
 }
