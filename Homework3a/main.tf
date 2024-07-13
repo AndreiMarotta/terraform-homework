@@ -7,9 +7,6 @@ resource "aws_key_pair" "deployer" {
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-data "aws_availability_zones" "available" {
-
-}
 
 data "aws_ami" "amazon_linux2" {
   most_recent = true
@@ -31,7 +28,7 @@ resource "aws_instance" "Name" {
   count = 3
   key_name = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  availability_zone      = data.aws_availability_zones.available.names[count.index]
+  availability_zone = element(["us-west-2a", "us-west-2b", "us-west-2c"], count.index)
   associate_public_ip_address = true
   user_data = file("apache.sh")
   user_data_replace_on_change = true
