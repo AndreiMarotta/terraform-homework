@@ -7,7 +7,7 @@ resource "aws_key_pair" "deployer" {
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "Name" {
   ami           = var.ami_id
   instance_type = var.instance_type
   count = var.instace_count
@@ -16,13 +16,9 @@ resource "aws_instance" "web" {
   availability_zone = element(["${var.aws_region}a", "${var.aws_region}b", "${var.aws_region}c"], count.index)
   associate_public_ip_address = true
 
-  # tags = {
-  #   Name = "web-${count.index + 1}"
-  # }
-}
-
-output ec2 {
-    value = aws_instance.web[0].public_ip   
+  tags = {
+    Name = "web-${count.index + 1}"
+  }
 }
 
 variable aws_region {
@@ -41,11 +37,11 @@ variable instance_type {
   default = ""
 }
 variable instace_count {
-  description = "Provide how many instances"
+  description = "Provide number of instances"
   type = number 
   default = 1
 }
-variable name {
+variable kp_name {
   description = "Provide instance name"
   type = string 
   default = ""
