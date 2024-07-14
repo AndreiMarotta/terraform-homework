@@ -7,50 +7,37 @@ resource "aws_key_pair" "deployer" {
   public_key = file("~/.ssh/id_rsa.pub")
 }
 
-resource "aws_instance" "web-1" {
-  ami           = "ami-03b039a920e4e8966"
+
+data "aws_ami" "amazon_linux2" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
+resource "aws_instance" "Name" {
+  ami           = data.aws_ami.amazon_linux2.id
   instance_type = "t2.micro"
-  availability_zone = "us-west-2a"
-  subnet_id = "subnet-0db446b326d98e885"
-  count = 1
+  count = 3
   key_name = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
+  availability_zone = element(["us-west-2a", "us-west-2b", "us-west-2c"], count.index)
+  associate_public_ip_address = true
   user_data = file("apache.sh")
   user_data_replace_on_change = true
+
+    tags = {
+    Name = "web-${count.index + 1}"
+  }
 }
 
-output ec2-2a {
-    value = aws_instance.web-1[0].public_ip   
-}
-
-resource "aws_instance" "web-2" {
-  ami           = "ami-03b039a920e4e8966"
-  instance_type = "t2.micro"
-  availability_zone = "us-west-2c"
-  subnet_id = "subnet-072a5523ae1ea4211"
-  count = 1
-  key_name = aws_key_pair.deployer.key_name
-  vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  user_data = file("apache.sh")
-  user_data_replace_on_change = true
-}
-
-output ec2-2c {
-    value = aws_instance.web-2[0].public_ip   
-}
-
-resource "aws_instance" "web-3" {
-  ami           = "ami-03b039a920e4e8966"
-  instance_type = "t2.micro"
-  availability_zone = "us-west-2b"
-  subnet_id = "subnet-0d80747369131bb15"
-  count = 1
-  key_name = aws_key_pair.deployer.key_name
-  vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  user_data = file("apache.sh")
-  user_data_replace_on_change = true
-}
-
-output ec2-2b {
-    value = aws_instance.web-3[0].public_ip   
+output ec2 {
+    value = aws_instance.Name[0].public_ip   
 }

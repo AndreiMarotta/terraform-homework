@@ -8,7 +8,7 @@ resource "aws_key_pair" "deployer" {
 }
 
 resource "aws_instance" "Name" {
-  ami           = var.ami_id
+  ami = var.ami_id
   instance_type = var.instance_type
   count = var.instace_count
   key_name = aws_key_pair.deployer.key_name
