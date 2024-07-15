@@ -1,19 +1,28 @@
-How to Use
-Clone the repository:
+What are and how to use the tfvars:
+https://spacelift.io/blog/terraform-tfvars
+
+Clone the working repository in your machine:
 git clone <repository_url>
-cd Homework4
+
 Initialize Terraform:
 terraform init
-Create a file_name.tfvars file with your configurations. You must provide all the required variables. You can use one of the provided file_name.tfvars files as a template. For example:
-region = "us-east-1"
-key_name = "my-key"
-instance_count = 1
-availability_zone = "us-east-1a"
-instance_type = "t2.micro"
-ami_id = "ami-0c55b159cbfafe1f0" # Example AMI ID, replace with a valid one
 
-To deploy in a specific region, use the -var-file flag:
+Create folders that will be pushed the repository such as:
+main.tf
+sg.tf
+variables.tf
 
-terraform apply -var-file=file_name.tfvars
-After deployment, you can destroy the resources:
-terraform destroy -var-file=file_name.tfvars
+Create a file_name.tfvars file with your configurations. Provide all the required variables specific for that tfvar file:
+viginia.tfvars
+oregon.tfvars
+
+Deploy in a specific region:
+terraform apply -var-file oregon.tfvars
+terraform apply -var-file virginia.tfvars
+
+Destroy the regional resources:
+terraform destroy -var-file oregon.tfvars
+terraform destroy -var-file virginia.tfvars
+
+Or you can destroy them all:
+terrafom destroy
