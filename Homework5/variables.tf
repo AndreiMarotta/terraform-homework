@@ -29,8 +29,9 @@ variable dns_hostnames {
 variable subnet {
   type = list(object( {
         cidr = string
-        availability_zone = string
+        az = string
         name = string
+        rt_name = string
     }))
 }
 
