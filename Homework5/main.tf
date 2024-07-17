@@ -16,7 +16,7 @@ resource "aws_subnet" "Name" {
   count      = length(var.subnet)
   vpc_id     = aws_vpc.kaizen.id
   cidr_block = var.subnet[count.index].cidr
-  az = var.subnet[count.index].az
+  az = "${var.region}${var.subnet[count.index].az}"
   map_public_ip_on_launch = var.ip_on_launch
 
   tags = {

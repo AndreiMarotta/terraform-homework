@@ -6,10 +6,6 @@ variable ip_on_launch {
   type = bool
 }
 
-variable route_table_names {
-  type = list
-}
-
 variable internet_gateway_name {
   type = string
 }
