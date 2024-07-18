@@ -11,15 +11,21 @@ variable internet_gateway_name {
 }
 
 variable vpc_cidr {
-  type = string
+ type = list(object( {
+        vpc = string
+    }))
 }
 
 variable dns_support {
-  type = bool
+ type = list(object( {
+        dns = string
+    }))
 }
 
 variable dns_hostnames {
-  type = bool
+ type = list(object( {
+        hostname = string
+    }))
 }
 
 variable subnet {

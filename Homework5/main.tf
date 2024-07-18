@@ -3,7 +3,7 @@ provider aws {
 }
 
 resource "aws_vpc" "kaizen" {
-  cidr_block = var.vpc_cidr
+  cidr_block = var.vpc_cidr[0].vpc
   enable_dns_support   = true
   enable_dns_hostnames = true
 
@@ -12,11 +12,11 @@ resource "aws_vpc" "kaizen" {
   }
 }
 
-resource "aws_subnet" "Name" {
+resource "aws_subnet" "main" {
   count      = length(var.subnet)
   vpc_id     = aws_vpc.kaizen.id
   cidr_block = var.subnet[count.index].cidr
-  az = "${var.region}${var.subnet[count.index].az}"
+  availability_zone = "${var.region}${var.subnet[count.index].az}"
   map_public_ip_on_launch = var.ip_on_launch
 
   tags = {
@@ -25,7 +25,7 @@ resource "aws_subnet" "Name" {
 }
 
 resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.kaizen.id
 
   tags = {
     Name = var.internet_gateway_name
@@ -33,7 +33,7 @@ resource "aws_internet_gateway" "igw" {
 }
 
 resource "aws_route_table" "pub_rt" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.kaizen.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -45,8 +45,8 @@ resource "aws_route_table" "pub_rt" {
   }
 }
 
-resource "aws_route_table" "prv_rt" {
-  vpc_id = aws_vpc.main.id
+resource "aws_route_table" "rt" {
+  vpc_id = aws_vpc.kaizen.id
 
   tags = {
     Name = var.subnet[2].rt_name
@@ -55,6 +55,6 @@ resource "aws_route_table" "prv_rt" {
 
 resource "aws_route_table_association" "rta" {
   count          = length(var.subnet)
-  subnet_id      = aws_subnet.subnet[count.index].name.id
-  route_table_id = aws_route_table.subnet[count.index].rt_name.id
+  subnet_id      = aws_subnet.main[count.index].id
+  route_table_id = aws_route_table.rt.id
 }

@@ -29,33 +29,35 @@ owners = ["137112412989"] # Canonical
 }
 
 resource "aws_instance" "Ubuntu" {
+  count      = length(var.subnet)
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.ec2_type[0].instance_type
-  subnet_id = aws_subnet.public1.id
+  subnet_id = aws_subnet.main[count.index].id
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  user_data = file("apache.sh")
+  user_data = file("ubuntu_apache.sh")
 
     tags = {
     Name = var.ec2_type[0].name
   }
 }
 
-output ec2-ubuntu {
-    value = aws_instance.Ubuntu.public_ip
-}
+# output ec2-ubuntu {
+#     value = aws_instance.Ubuntu.public_ip
+# }
 
 resource "aws_instance" "Amazon" {
+  count      = length(var.subnet)
   ami           = data.aws_ami.linux.id
   instance_type = var.ec2_type[1].instance_type
-  subnet_id = aws_subnet.pb1.id
+  subnet_id = aws_subnet.main[count.index].id
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  user_data = file("apache-amazon.sh")
+  user_data = file("amazon_apache.sh")
 
   tags = {
     Name = var.ec2_type[1].name
   }
 }
 
-output ec2-amazon {
-    value = aws_instance.Amazon.public_ip
-}
+# output ec2-amazon {
+#     value = aws_instance.Amazon.public_ip
+# }
