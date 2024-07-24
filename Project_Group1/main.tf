@@ -11,3 +11,17 @@ module "s3_website" {
   index_document = var.index_document
   error_document = var.error_document
 }
+
+resource "aws_s3_object" "object" {
+  depends_on = [aws_s3_bucket.example]
+  bucket = “project1”
+  key    = “index.html”
+  source = “index.html”
+}
+resource "aws_s3_object" "object" {
+  depends_on = [aws_s3_bucket.example]
+  bucket = “project1”
+  key    = “error.html”
+  source = “error.html”
+}
+
