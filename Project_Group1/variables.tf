@@ -6,19 +6,13 @@ variable "aws_region" {
 
 variable "bucketname" {
   type        = string
-  default ="default-bucket-name"
+  default ="backendfile-project1"
 }
 
 variable "domain_name" {
   description = "Domain name for the website"
   type        = string
   default = "snoozerandfriends.com"
-}
-
-variable "subdomain_name" {
-  description = "Subdomain name for the website"
-  type        = string
-  default = "ccc"
 }
 
 variable "index_doc" {
@@ -33,8 +27,14 @@ variable "error_doc" {
   default     = "error.html"
 }
 
-variable "goodbyeqr_doc" {
+variable "qr_doc" {
   description = "Filename of the error document"
   type        = string
   default     = "GoodByeQR.html"
+}
+
+variable "qr_png" {
+  description = "Filename of the error document"
+  type        = string
+  default     = "/home/ec2-user/terraform-homework/Project_Group1/GoodByeQR.png"
 }

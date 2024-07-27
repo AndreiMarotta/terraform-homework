@@ -51,13 +51,22 @@ resource "aws_s3_object" "error" {
   content_type = "text/html"
 }
 
-resource "aws_s3_object" "GoodfByeQR" {
+resource "aws_s3_object" "qr" {
   depends_on = [aws_s3_bucket_acl.example]
   bucket = aws_s3_bucket.my-project-bucket.id
-  key    = var.GoodByeQR_doc
-  source = var.GoodByeQR_doc
+  key    = var.qr_doc
+  source = var.qr_doc
   acl = "public-read"
   content_type = "text/html"
+}
+
+resource "aws_s3_object" "qr_png" {
+  depends_on = [aws_s3_bucket_acl.example]
+  bucket = aws_s3_bucket.my-project-bucket.id
+  key    = "GoodByeQR.png"
+  source = var.qr_png
+  acl = "public-read"
+  content_type = "png"
 }
 
 resource "aws_s3_bucket_website_configuration" "website" {
@@ -68,22 +77,14 @@ resource "aws_s3_bucket_website_configuration" "website" {
   error_document {
     key = var.error_doc
     }
-    GoodfByeQR_document {
-    key = var.GoodByeQR_doc
-    }
-      depends_on = [ aws_s3_bucket_acl.example ]
-}
-
-resource "aws_route53_zone" "primary" {
-  name = "snoozerandfriends.com"
+  depends_on = [ aws_s3_bucket_acl.example ]
 }
 
 resource "aws_route53_record" "www" {
   zone_id = "Z05998023AFX350ZLIJ38"
-  name = "ddd.snoozerandfriends.com"
+  name = var.bucketname
   type = "CNAME"
   ttl = 300
   records = ["${aws_s3_bucket.my-project-bucket.bucket}.s3-website-us-east-1.amazonaws.com"]
 }
-
 
