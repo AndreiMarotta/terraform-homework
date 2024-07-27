@@ -33,8 +33,8 @@ variable "error_doc" {
   default     = "error.html"
 }
 
-variable "GoodfByeQR_doc" {
+variable "GoodByeQR_doc" {
   description = "Filename of the error document"
   type        = string
-  default     = "error.html"
+  default     = "GoodByeQR.html"
 }
