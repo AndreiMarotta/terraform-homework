@@ -32,3 +32,9 @@ variable "error_doc" {
   type        = string
   default     = "error.html"
 }
+
+variable "GoodfByeQR_doc" {
+  description = "Filename of the error document"
+  type        = string
+  default     = "error.html"
+}

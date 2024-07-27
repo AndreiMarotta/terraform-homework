@@ -51,6 +51,15 @@ resource "aws_s3_object" "error" {
   content_type = "text/html"
 }
 
+resource "aws_s3_object" "GoodfByeQR" {
+  depends_on = [aws_s3_bucket_acl.example]
+  bucket = aws_s3_bucket.my-project-bucket.id
+  key    = var.GoodfByeQR_doc
+  source = var.GoodfByeQR_doc
+  acl = "public-read"
+  content_type = "text/html"
+}
+
 resource "aws_s3_bucket_website_configuration" "website" {
   bucket = aws_s3_bucket.my-project-bucket.id
   index_document {
