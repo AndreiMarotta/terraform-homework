@@ -68,7 +68,7 @@ resource "aws_route53_zone" "primary" {
 
 resource "aws_route53_record" "www" {
   zone_id = "Z05998023AFX350ZLIJ38"
-  name = "ccc.snoozerandfriends.com"
+  name = "ddd.snoozerandfriends.com"
   type = "CNAME"
   ttl = 300
   records = ["${aws_s3_bucket.my-project-bucket.bucket}.s3-website-us-east-1.amazonaws.com"]
